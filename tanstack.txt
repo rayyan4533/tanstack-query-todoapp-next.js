@@ -1,0 +1,44 @@
+QueryClient
+   ↓
+holds the query cache
+
+QueryClientProvider
+   ↓
+makes that cache available to components below it
+
+
+
+
+Notice what disappeared:
+useState([])
+useState(true)
+useState(null)
+useEffect(...)
+try/catch/finally
+setTodos(...)
+setIsLoading(...)
+setError(...)
+
+
+                                               
+POST /api/todos                                                               
+      ↓
+success                                              
+      ↓
+invalidate ["todos"]
+      ↓
+TanStack Query marks that cache as stale
+      ↓
+active components using ["todos"] refetch
+
+
+vs
+refreshTodos()
+↓
+setRefreshKey(...)
+↓
+pass refreshKey prop
+↓
+useEffect dependency changes
+↓
+manual refetch

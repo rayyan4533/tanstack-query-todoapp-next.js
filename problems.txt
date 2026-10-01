@@ -1,0 +1,29 @@
+same server data
++
+multiple components
+=
+duplicate network requests
+
+
+
+The POST succeeded, but React had no idea that TodoList should refresh. So we had to invent:
+refreshKey
+refreshTodos()
+onTodoCreated()
+prop passing
+useEffect dependency
+another GET request
+This is already manual synchronization.
+
+1. Open /
+2. TodoList mounts
+3. GET /api/todos fires
+4. Go to /upload-documents
+5. Come back to /
+6. TodoList mounts again
+7. GET /api/todos fires again
+Perfect. You’ve now seen all four pain points in the non-TanStack version:
+1. Zero caching — leave /, come back, and /api/todos fetches again.
+2. Duplicate requests — TodoList and TodoCount both call the same endpoint.
+3. Boilerplate — useState, useEffect, loading, error, try/catch, manual refetch logic.
+4. Manual synchronization — add/delete requires callbacks, refreshKey, prop drilling, and multiple refetches.
