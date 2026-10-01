@@ -1,38 +1,98 @@
-# Todo Query Learning
+# Todo App with TanStack Query
 
-This is the project state before introducing TanStack Query.
+A Next.js todo application built to understand the difference between manual server-state management and TanStack Query.
 
-## Included
+## Tech Stack
 
-- Next.js App Router
+- Next.js
 - TypeScript
+- TanStack Query
 - Axios
-- Zod
 - React Hook Form
-- GET `/api/todos`
-- POST `/api/todos`
-- PATCH `/api/todos/[id]`
-- Todo checkbox toggling
-- Manual local state synchronization
+- Zod
+- Tailwind CSS
 
-## Run
+## Features
+
+- Fetch todos
+- Create todos
+- Update completion status
+- Delete todos
+- Form validation with Zod
+- Form handling with React Hook Form
+- Server-state caching with TanStack Query
+- Query invalidation after mutations
+
+## Project Structure
+
+```text
+app/
+├── api/
+│   └── todos/
+│       ├── route.ts
+│       └── [id]/
+│           └── route.ts
+├── components/
+│   ├── AddTodoForm.tsx
+│   ├── TodoItem.tsx
+│   └── TodoList.tsx
+├── hooks/
+│   └── useTodos.ts
+├── providers.tsx
+└── page.tsx
+
+lib/
+└── todos.ts
+
+types/
+└── todo.ts
+```
+
+## TanStack Query Usage
+
+The app uses custom hooks to keep server-state logic separate from UI components.
+
+Examples:
+
+```ts
+useTodos();
+useCreateTodo();
+useUpdateTodo();
+useDeleteTodo();
+```
+
+`useQuery` is used for reading todos, while `useMutation` is used for creating, updating, and deleting them.
+
+After a mutation succeeds, the todos query is invalidated:
+
+```ts
+queryClient.invalidateQueries({
+  queryKey: ["todos"],
+});
+```
+
+This allows components using the same query to receive updated server data without manually passing refresh callbacks through the component tree.
+
+## Running the Project
+
+Install dependencies:
 
 ```bash
 pnpm install
+```
+
+Start the development server:
+
+```bash
 pnpm dev
 ```
 
-Then open:
+Open:
 
 ```text
 http://localhost:3000
 ```
 
-## Important learning point
+## Note
 
-Adding a todo with the form successfully updates the backend array, but the
-`TodoList` component does not automatically refetch. That stale-state problem
-is intentional and is the next thing to solve manually before introducing
-TanStack Query.
-
-The todos are stored in memory, so restarting the dev server resets them.
+Todos are currently stored in an in-memory array rather than a database, so they reset whenever the development server restarts.
